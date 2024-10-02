@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RestAssuredTestSuite" parallel="false">
+
+    <test name="RestAssuredAPITests">
+        <packages>
+            <!-- Include all classes under the com.rest package -->
+            <!--            <package name="com.rest"/>-->
+        </packages>
+    </test>
+
+</suite>
