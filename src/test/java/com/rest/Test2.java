@@ -8,4 +8,10 @@ public class Test2 {
     public void testa1() {
         System.out.println("hello method test2");
     }
+
+    @Test
+    public void testa12() {
+        System.out.println("hello method test222");
+    }
+
 }
