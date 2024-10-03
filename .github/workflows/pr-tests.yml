@@ -1,0 +1,42 @@
+name: Run Tests on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Java (assuming you're using Java 11)
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+
+      # Step 3: Get the changed files
+      - name: Get Changed Files
+        id: changes
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main...HEAD > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+
+      # Step 4: Run tests for modified files (filtered to Java files)
+      - name: Run Tests on Changed Files
+        run: |
+          changed_files=$(cat changed_files.txt | grep ".java")
+          if [ -n "$changed_files" ]; then
+            echo "Running tests for changed files: $changed_files"
+            # Assuming Maven is being used to run tests
+            mvn -Dtest=$(echo "$changed_files" | sed 's/\//./g' | sed 's/.java//g' | tr '\n' ',' | sed 's/,$//') test
+          else
+            echo "No Java files were changed, skipping tests."
+          fi
